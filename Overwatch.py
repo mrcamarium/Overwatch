@@ -17,10 +17,18 @@ giallo = Fore.YELLOW
 #Info
 with open('Moduli/info.txt', encoding='utf8') as f:
      print(verde + f.read() + reset,'\n')
+#Analisi dei dati di rete
+hostname = socket.gethostname()
+ipAddress = socket.gethostbyname(hostname)
+publicIp = requests.get('https://checkip.amazonaws.com').text.strip()
+print(f"Hostname: {hostname}")
+print("IP locale: ", ipAddress)
+print("IP pubblico: ", publicIp, '\n')
+time.sleep(2) #Pausa     
 #Menu
 def menu():
     print(giallo + """
-\t----------- MENU -----------
+\t----------- MENU ------------
 \t 1. Ottieni IP dal nome host
 \t 2. Ping Sweep
 \t 3. Traceroute
