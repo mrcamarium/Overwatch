@@ -1,4 +1,4 @@
-# Overwatch 0.9.0
+# Overwatch 1.0.0
 Tool per esamianre la rete e effettuare degli attacchi
 1. Ottieni IP dal nome host
 2. Ping Sweep
