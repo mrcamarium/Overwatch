@@ -16,10 +16,10 @@ $ pkg install git -y
   
 $ pkg install python && pkg install python2 -y
   
-$ git clone https://github.com/mrcamarium/Dr.-Fate
+$ git clone https://github.com/mrcamarium/Overwatch
   
 $ pip install -r requirements.txt
   
-$ cd Dr.-Fate 
+$ cd Overwatch 
   
-$ python3 Fate.py
+$ python3 Overwatch.py
