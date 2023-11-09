@@ -1,9 +1,14 @@
 # Overwatch 0.9.0
 Tool per esamianre la rete e effettuare degli attacchi
-1) Verifica di una email (Se è vera)
-2) Controllo IP
-3) Generatore di falsa identità
-4) Estrapola da un file eml i dati del mittente per effettuare delle verifiche
+1. Ottieni IP dal nome host
+2. Ping Sweep
+3. Traceroute
+4. TCP Sweep
+5. Porta Scanning
+6. Banner Grabber
+7. Data hyperlink website
+8. WMI Attack
+9. DOS time bomb                              
 
 $ apt update && apt upgrade 
   
