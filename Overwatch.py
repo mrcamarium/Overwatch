@@ -1,6 +1,6 @@
 # Importo le librerie
 import os, socket, subprocess, time, threading, urllib, wmi, sys, ipaddress, contextlib, requests
-import fake_useragent
+import fake_useragent, psutil
 from datetime import datetime
 from queue import Queue
 from bs4 import BeautifulSoup
@@ -36,9 +36,10 @@ def menu():
 \t 5. Porta Scanning
 \t 6. Banner Grabber
 \t 7. Data hyperlink website
-\t 8. WMI Attack
-\t 9. DOS time bomb                              
-\t 10. Exit
+\t 8. MAC spoofing
+\t 9. WMI Attack
+\t 10. DOS time bomb                              
+\t 11. Exit
 """ + reset)
 #Lista azioni    
 def control():
@@ -58,10 +59,12 @@ def control():
     elif ctrl == "7" :
         get_hyperlink() #Data hyperlink website
     elif ctrl == "8" :
-        wmi_attack() #WMI Attack
+        MAC() #MAC spoofing
     elif ctrl == "9" :
-        dos_timebomb() #DOS time bomb
+        wmi_attack() #WMI Attack
     elif ctrl == "10" :
+        dos_timebomb() #DOS time bomb
+    elif ctrl == "11" :
         sys.exit()
     else :
         print(rosso + "Scelta Errata" + reset)
@@ -194,6 +197,27 @@ def get_hyperlink():
     for link in soup.find_all("a", href=True):
         f.write(link["href"] + "\n")
     f.close()
+
+def MAC():
+    my_ip = socket.gethostbyname(socket.gethostname())
+    addrs = psutil.net_if_addrs()
+    interface = ""
+    for nic, info in addrs.items():
+        for addr in info:
+            if addr.address == my_ip:
+                interface = nic
+                break
+        if interface:
+            break
+    if not interface:
+        print(f"{rosso}Nessuna interfaccia corrispondente al tuo indirizzo IP{reset}")
+        exit()
+    print(f"L'interfaccia che stai usando è {verde}{interface}{reset}")
+    new_mac = input("Inserisci il nuovo indirizzo MAC: ")
+    subprocess.call(["ifconfig", interface, "down"])
+    subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
+    subprocess.call(["ifconfig", interface, "up"])
+    print(f"L'indirizzo MAC di {verde}{interface}{reset} è stato cambiato in {verde}{new_mac}{reset}")    
 
 def wmi_attack():
     ip=input("Inserire indirizzo IP: ")
