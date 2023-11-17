@@ -1,4 +1,4 @@
-# Overwatch 1.0.0
+# Overwatch 1.1.0
 Tool per esamianre la rete e effettuare degli attacchi
 1. Ottieni IP dal nome host
 2. Ping Sweep
@@ -7,8 +7,9 @@ Tool per esamianre la rete e effettuare degli attacchi
 5. Porta Scanning
 6. Banner Grabber
 7. Data hyperlink website
-8. WMI Attack
-9. DOS time bomb                              
+8. MAC spoofing
+9. WMI Attack
+10. DOS time bomb                           
 
 $ apt update && apt upgrade 
   
