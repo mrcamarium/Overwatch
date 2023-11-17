@@ -15,7 +15,7 @@ opaco = Style.DIM
 brillante = Style.BRIGHT
 giallo = Fore.YELLOW
 #Info
-with open('Moduli/info.txt', encoding='utf8') as f:
+with open('Info.txt', encoding='utf8') as f:
      print(verde + f.read() + reset,'\n')
 #Analisi dei dati di rete
 hostname = socket.gethostname()
