@@ -1,8 +1,7 @@
 # Importo le librerie
-import os, socket, subprocess, time, threading, urllib, wmi, sys, ipaddress, contextlib, requests
-import fake_useragent, psutil
+import os, socket, subprocess, time, wmi, sys, contextlib, requests
+import fake_useragent, netifaces, uuid, subprocess
 from datetime import datetime
-from queue import Queue
 from bs4 import BeautifulSoup
 from colorama import Fore #BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE
 from colorama import Style #DIM, NORMAL, BRIGHT, RESET_ALL
@@ -24,7 +23,7 @@ publicIp = requests.get('https://checkip.amazonaws.com').text.strip()
 print(f"Hostname: {hostname}")
 print("IP locale: ", ipAddress)
 print("IP pubblico: ", publicIp, '\n')
-time.sleep(2) #Pausa     
+time.sleep(1) #Pausa     
 #Menu
 def menu():
     print(giallo + """
@@ -199,25 +198,19 @@ def get_hyperlink():
     f.close()
 
 def MAC():
-    my_ip = socket.gethostbyname(socket.gethostname())
-    addrs = psutil.net_if_addrs()
-    interface = ""
-    for nic, info in addrs.items():
-        for addr in info:
-            if addr.address == my_ip:
-                interface = nic
-                break
-        if interface:
-            break
-    if not interface:
-        print(f"{rosso}Nessuna interfaccia corrispondente al tuo indirizzo IP{reset}")
-        exit()
+    interface = netifaces.gateways()["default"][netifaces.AF_INET][1]
     print(f"L'interfaccia che stai usando è {verde}{interface}{reset}")
-    new_mac = input("Inserisci il nuovo indirizzo MAC: ")
-    subprocess.call(["ifconfig", interface, "down"])
-    subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
-    subprocess.call(["ifconfig", interface, "up"])
-    print(f"L'indirizzo MAC di {verde}{interface}{reset} è stato cambiato in {verde}{new_mac}{reset}")    
+    mac_address = uuid.uuid4().hex[:12]
+    print(f"Indirizzo MAC generato è: {verde}{mac_address}{reset}")
+    confirm = input("Vuoi usare il MAC generato? (s/n): ")
+    if confirm.lower() == "s":
+        new_mac = mac_address
+    else:
+        new_mac = input("Inserisci il nuovo indirizzo MAC: ")
+    subprocess.run(["ipconfig", "/release", interface])
+    subprocess.run(["ipconfig", "/setclassid", interface, new_mac])
+    subprocess.run(["ipconfig", "/renew", interface])
+    print(f"L'indirizzo MAC di {verde}{interface}{reset} è stato cambiato in {verde}{new_mac}{reset}")
 
 def wmi_attack():
     ip=input("Inserire indirizzo IP: ")
