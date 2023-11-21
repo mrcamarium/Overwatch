@@ -1,6 +1,6 @@
 # Importo le librerie
 import os, socket, subprocess, time, wmi, sys, contextlib, requests
-import fake_useragent, netifaces, uuid, subprocess
+import fake_useragent, netifaces, uuid, subprocess, platform
 from datetime import datetime
 from bs4 import BeautifulSoup
 from colorama import Fore #BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE
@@ -207,9 +207,18 @@ def MAC():
         new_mac = mac_address
     else:
         new_mac = input("Inserisci il nuovo indirizzo MAC: ")
-    subprocess.run(["ipconfig", "/release", interface])
-    subprocess.run(["ipconfig", "/setclassid", interface, new_mac])
-    subprocess.run(["ipconfig", "/renew", interface])
+    os = platform.system()
+    if os == "Windows":
+        subprocess.run(["ipconfig", "/release", interface])
+        subprocess.run(["ipconfig", "/setclassid", interface, new_mac])
+        subprocess.run(["ipconfig", "/renew", interface])
+    elif os == "Linux":
+        subprocess.run(["ifconfig", interface, "down"])
+        subprocess.run(["ifconfig", interface, "hw", "ether", new_mac])
+        subprocess.run(["ifconfig", interface, "up"])
+    else:
+        print(f"Questo sistema operativo non è supportato: {os}")
+        return
     print(f"L'indirizzo MAC di {verde}{interface}{reset} è stato cambiato in {verde}{new_mac}{reset}")
 
 def wmi_attack():
